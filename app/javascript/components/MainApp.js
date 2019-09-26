@@ -17,7 +17,7 @@ class MainApp extends React.Component {
     getApartments = () => {
         fetch('/apartments')
         .then((resp) => {
-            return resp.json
+            return resp.json()
         })
         .then((apartments) => {
             this.setState({apartments})
