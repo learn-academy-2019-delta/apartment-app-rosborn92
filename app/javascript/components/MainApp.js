@@ -1,9 +1,10 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { BrowserRouter as  Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as  Router, Route, Link, Switch } from 'react-router-dom'
 import { Jumbotron, Nav, NavItem, NavLink } from 'reactstrap'
 
 import Home from './pages/Home'
+import NewApartment from './pages/NewApartment'
 
 class MainApp extends React.Component {
     constructor(props){
@@ -24,6 +25,21 @@ class MainApp extends React.Component {
         })
     }
 
+    createApartment = (attributes) => {
+        return fetch('/apartments', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({apartment: attributes})
+        })
+        .then(response => {
+            if(response.status === 201){
+                this.getApartments()
+            }
+        })
+    }
+
   render () {
       const {
       logged_in,
@@ -39,6 +55,9 @@ class MainApp extends React.Component {
             <Nav>
 	            <NavItem>
 	              <NavLink to="/" tag={Link}>Home</NavLink>
+	            </NavItem>
+	            <NavItem>
+	              <NavLink to="/new-apartment" tag={Link}>New Apartment</NavLink>
 	            </NavItem>
 
                 {logged_in &&
@@ -56,18 +75,29 @@ class MainApp extends React.Component {
                 <h1>Welcome to Zip Apartments</h1>
             </Jumbotron>
 
-
+            <Switch>
             <Route exact path="/"
-                render={ (...props) => {
+                render={ (props) => {
                     return(
-                    <Home
-                        {...props}
-                        // currentUserId = {current_user_id}
-                        apartments={apartments}
-                    />
+                        <Home
+                            {...props}
+                            // currentUserId = {current_user_id}
+                            apartments={apartments}
+                        />
                 )
-            }}
+                }}
             />
+            <Route path="/new-apartment"
+                render={ (props) => {
+                    return(
+                        <NewApartment
+                            {...props}
+                            onClick={this.createApartment}
+                        />
+                    )
+                }}
+            />
+            </Switch>
         </Router>
       </React.Fragment>
     );

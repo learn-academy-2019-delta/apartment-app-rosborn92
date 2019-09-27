@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { BrowserRouter as  Router, Route, Link } from 'react-router-dom'
-import { Jumbotron, Nav, NavItem, NavLink, Card, CardBody, CardText } from 'reactstrap'
+import { Jumbotron, Nav, NavItem, NavLink, Card, CardBody, CardText, Row, Col } from 'reactstrap'
 
 
 class Home extends React.Component {
@@ -10,11 +10,14 @@ class Home extends React.Component {
 
     return (
       <React.Fragment>
-        <h2>Apartments</h2>
+        <center><h2>Apartments</h2></center>
 
-        {apartments.map((apartment, index) => {
-            return(
-                <Card key={index}>
+
+                <Row>
+                {apartments.map((apartment, index) => {
+                    return(
+                <Col key={index} sm={{ size: 'auto', offset: 1 }} >
+                <Card>
                     <CardBody>
                         <CardText>
                             {apartment.address}
@@ -27,8 +30,11 @@ class Home extends React.Component {
                         </CardText>
                     </CardBody>
                 </Card>
+                </Col>
+
             )}
         )}
+        </Row>
 
       </React.Fragment>
     );
